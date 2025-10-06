@@ -25,55 +25,49 @@
         <nav class="mt-2">
             <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                @can('dashboard')
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link @if (Route::is('dashboard')) active @endif">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                @endcan
 
+                <li class="nav-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link @if (Route::is('dashboard')) active @endif">
+                        <i class="nav-icon bi bi-speedometer"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('report.index') }}" class="nav-link @if (Route::is('report.*')) active @endif">
+                        <i class="nav-icon bi bi-clipboard2-data-fill"></i>
+                        <p>Reports</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('signatory.index') }}" class="nav-link @if (Route::is('signatory.*')) active @endif">
+                        <i class="nav-icon bi bi-pen"></i>
+                        <p>Signatory</p>
+                    </a>
+                </li>
 
-                @canany(['general.setting', 'mail.setup', 'setting.qr_code', 'setting.privacy_policy', 'setting.terms_and_condition'])
-                    <li class="nav-item {{ $isActive['settings'] == 'true' ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-sliders2"></i>
-                            <p>Site Configuration
-                                <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-
-                            @can('general.setting')
-                                <li class="nav-item">
-                                    <a href="{{ route('setting.index') }}" class="nav-link @if (Route::is('setting.index')) active @endif">
-                                        <i class="nav-icon bi bi-gear"></i>
-                                        <p>General Setting</p>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('mail.setup')
-                                <li class="nav-item">
-                                    <a href="{{ route('mail.setup') }}" class="nav-link @if (Route::is('mail.*')) active @endif">
-                                        <i class="nav-icon bi bi-envelope-plus"></i>
-                                        <p>Mail Setup</p>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('setting.qr_code')
-                                <li class="nav-item">
-                                    <a href="{{ route('setting.qr_code') }}" class="nav-link @if (Route::is('setting.qr_code')) active @endif">
-                                        <i class="nav-icon bi bi-qr-code"></i>
-                                        <p>QR Code Setting</p>
-                                    </a>
-                                </li>
-                            @endcan
-
-                        </ul>
-                    </li>
-                @endcanany
+                <li class="nav-item {{ $isActive['settings'] == 'true' ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-sliders2"></i>
+                        <p>Site Configuration
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('setting.index') }}" class="nav-link @if (Route::is('setting.index')) active @endif">
+                                <i class="nav-icon bi bi-gear"></i>
+                                <p>General Setting</p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a href="{{ route('mail.setup') }}" class="nav-link @if (Route::is('mail.*')) active @endif">
+                                <i class="nav-icon bi bi-envelope-plus"></i>
+                                <p>Mail Setup</p>
+                            </a>
+                        </li> --}}
+                    </ul>
+                </li>
             </ul>
             <!--end::Sidebar Menu-->
         </nav>

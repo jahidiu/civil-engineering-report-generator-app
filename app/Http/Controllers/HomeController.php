@@ -7,9 +7,7 @@ use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Modules\Base\App\Models\Event;
-use Modules\Base\App\Models\EventBooking;
-use Modules\Base\App\Models\Member;
+use Modules\Base\App\Models\Report;
 
 class HomeController extends Controller
 {
@@ -22,7 +20,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('backend.pages.dashboard');
+        $data['toralReports'] = Report::count();
+        return view('backend.pages.dashboard', $data);
     }
 
     public function userProfile()

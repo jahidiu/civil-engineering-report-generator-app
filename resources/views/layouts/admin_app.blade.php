@@ -46,6 +46,9 @@
     <link rel="stylesheet" href="{{ asset('backend/css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
 
+    <!-- select2 CSS -->
+    <link rel="stylesheet" href="{{ asset('backend/css/select2.min.css') }}" />
+
     <!-- Toastr CSS -->
     <link href="{{ asset('backend/css/toastr.min.css') }}" rel="stylesheet">
     <style>
@@ -139,6 +142,9 @@
         });
     </script>
     <!--end::OverlayScrollbars Configure-->
+
+    <!-- select2 JS -->
+    <script src="{{ asset('backend/js/select2.min.js') }}"></script>
 
     <script src="{{ asset('backend/plugins/flatpickr/flatpickr.js') }}"></script>
     <!-- dataTables JS -->

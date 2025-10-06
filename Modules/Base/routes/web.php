@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Base\App\Http\Controllers\DonationTypeController;
+use Modules\Base\App\Http\Controllers\SignatoryController;
 use Modules\Base\App\Http\Controllers\GeneralSettingController;
 use Modules\Base\App\Http\Controllers\MailConfigController;
+use Modules\Base\App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +33,22 @@ Route::group(['middleware' => 'auth', 'prefix' => 'base'], function () {
         Route::post('/update-mail-settings', 'updateMailSettings')->name('mail.update_settings');
     });
 
-    Route::controller(DonationTypeController::class)->middleware('auth')->group(function () {
-        Route::get('/donation-type', 'index')->name('donation_type.index')->middleware('permission:donation_type.list');
-        Route::get('/donation-type-list', 'get_for_select')->name('donation_type.list');
-        Route::post('/donation-type', 'store')->name('donation_type.store')->middleware('permission:donation_type.create');
-        Route::get('/donation-type/{donation_type}/edit', 'edit')->name('donation_type.edit')->middleware('permission:donation_type.edit');
-        Route::put('/donation-type/{donation_type}', 'update')->name('donation_type.update')->middleware('permission:donation_type.edit');
-        Route::delete('/donation-type/{donation_type}', 'destroy')->name('donation_type.destroy')->middleware('permission:donation_type.delete');
+    Route::controller(SignatoryController::class)->middleware('auth')->group(function () {
+        Route::get('/signatory', 'index')->name('signatory.index');
+        Route::get('/signatory/create', 'create')->name('signatory.create');
+        Route::post('/signatory', 'store')->name('signatory.store');
+        Route::get('/signatory/{id}/edit', 'edit')->name('signatory.edit');
+        Route::put('/signatory/{id}', 'update')->name('signatory.update');
+        Route::post('/signatory/delete', 'destroy')->name('signatory.delete');
+        Route::get('/signatory/get-list', 'get_for_select')->name('signatory.list');
     });
-
+    Route::controller(ReportController::class)->middleware('auth')->group(function () {
+        Route::get('/report', 'index')->name('report.index');
+        Route::get('/report/create', 'create')->name('report.create');
+        Route::post('/report', 'store')->name('report.store');
+        Route::get('/report/{id}', 'show')->name('report.show');
+        Route::get('/report/{id}/edit', 'edit')->name('report.edit');
+        Route::put('/report/{id}', 'update')->name('report.update');
+        Route::post('/report/delete', 'destroy')->name('report.delete');
+    });
 });
