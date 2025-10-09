@@ -34,9 +34,9 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('report.index') }}" class="nav-link @if (Route::is('report.*')) active @endif">
-                        <i class="nav-icon bi bi-clipboard2-data-fill"></i>
-                        <p>Reports</p>
+                    <a href="{{ route('certificate.index') }}" class="nav-link @if (Route::is('certificate.*')) active @endif">
+                        <i class="nav-icon bi bi-file-earmark-text"></i>
+                        <p>Certificates</p>
                     </a>
                 </li>
                 <li class="nav-item">

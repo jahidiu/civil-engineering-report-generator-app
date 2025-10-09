@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>{{ $certificate->brtc_no . '|' . $siteData['site_name'] }}</title>
     <meta name="title" content="{{ $siteData['site_name'] }} | {{ $siteData['meta_title'] }}" />
     <meta name="description" content="{{ $siteData['meta_description'] }}" />
     <meta name="keywords" content="{{ $siteData['meta_tag'] }}" />
@@ -62,15 +63,29 @@
             .no-print {
                 display: none !important;
             }
+
+            .certificate-header img {
+                width: 70px;
+            }
         }
 
-        .report-header,
-        .report-footer {
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .certificate-header img {
+            width: 80px;
+            height: auto;
+        }
+
+        .certificate-header,
+        .certificate-footer {
             text-align: center;
         }
 
-        .report-header h5,
-        .report-header h6 {
+        .certificate-header h5,
+        .certificate-header h6 {
             margin: 0;
             font-weight: bold;
         }
@@ -90,11 +105,11 @@
             background: transparent;
         }
 
-        .report-info td {
+        .certificate-info td {
             background: transparent;
         }
 
-        .report-info td {
+        .certificate-info td {
             text-align: left;
             padding: 3px 0;
             border: none;
@@ -166,7 +181,8 @@
             width: 120px;
             height: 120px;
         }
-        .nowrap{
+
+        .nowrap {
             white-space: nowrap !important;
         }
     </style>
@@ -174,7 +190,7 @@
 
 <body class="content">
     <div class="d-flex justify-content-between align-items-center mb-3 no-print">
-        <a href="{{ route('report.index') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('certificate.index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Back
         </a>
 
@@ -184,63 +200,82 @@
     </div>
 
     <!-- Header -->
-    <div class="report-header">
-        <h5>BANGLADESH UNIVERSITY OF ENGINEERING AND TECHNOLOGY (BUET)</h5>
-        <h6>DEPARTMENT OF CIVIL ENGINEERING</h6>
-        <p>
-            Mobile: 01819557964, PABX: 55660000-2 Ext 7226 <br>
-            http://brtctest.ce.buet.ac.bd | https://verify.ce.buet.ac.bd
-        </p>
-        <p><b>CONCRETE LABORATORY</b></p>
+    <div class="certificate-header d-flex align-items-center justify-content-between mb-3">
+        <!-- Left Logo -->
+        <div class="logo-left text-start">
+            <img src="{{ showDefaultImage('storage/' . $siteData['primary_logo']) }}" alt="Left Logo" style="width: 80px; height: auto;">
+        </div>
+
+        <!-- Center Text -->
+        <div class="text-center flex-grow-1">
+            <h5 class="mb-1">BANGLADESH UNIVERSITY OF ENGINEERING AND TECHNOLOGY (BUET)</h5>
+            <h6 class="mb-1">DEPARTMENT OF CIVIL ENGINEERING</h6>
+            <p class="mb-1">
+                Mobile: 01819557964, PABX: 55660000-2 Ext 7226 <br>
+                <a href="http://brtctest.ce.buet.ac.bd" target="_blank">brtctest.ce.buet.ac.bd</a> |
+                <a href="https://verify.ce.buet.ac.bd" target="_blank">verify.ce.buet.ac.bd</a>
+            </p>
+            <p class="fw-bold mb-0">CONCRETE LABORATORY</p>
+        </div>
+
+        <!-- Right Logo -->
+        <div class="logo-right text-end">
+            <img src="{{ showDefaultImage('storage/' . $siteData['secondary_logo']) }}" alt="Right Logo" style="width: 80px; height: auto;">
+        </div>
     </div>
 
     <hr>
 
-    <!-- Report Info -->
-    <table class="table report-info">
+    <!-- Certificate Info -->
+    <table class="table certificate-info">
         <tr>
             <td class="nowrap"><b>BRTC No.</b></td>
-            <td>
-                : <b>{{ $report->brtc_no ?? '—' }};
-                    Dt: {{ $report->brtc_date ? \Carbon\Carbon::parse($report->brtc_date)->format('d/m/Y') : '—' }}</b>
-            </td>
+            <td>:&nbsp;</td>
+            <td colspan="2"><b>{{ $certificate->brtc_no }}; Dt: {{ $certificate->brtc_date ? \Carbon\Carbon::parse($certificate->brtc_date)->format('d/m/Y') : '—' }}</b></td>
+
         </tr>
         <tr>
             <td><b>Sent by</b></td>
-            <td>: {{ $report->sent_by ?? '—' }}</td>
+            <td>:&nbsp;</td>
+            <td colspan="2">{{ $certificate->sent_by }}</td>
         </tr>
         <tr>
             <td><b>Ref. No.</b></td>
-            <td>
-                : {{ $report->ref_no ?? '—' }},
-                Dt: {{ $report->ref_date ? \Carbon\Carbon::parse($report->ref_date)->format('d/m/Y') : '—' }}
-            </td>
-        </tr>
-        <tr>
-            <td><b>Sample</b></td>
-            <td>: <b>{{ $report->sample ?? '—' }}</b></td>
+            <td>:&nbsp;</td>
+            <td colspan="2">{{ $certificate->ref_no }}; Dt: {{ $certificate->ref_date ? \Carbon\Carbon::parse($certificate->ref_date)->format('d/m/Y') : '—' }}</td>
+
         </tr>
         <tr>
             <td><b>Project</b></td>
-            <td>: {{ $report->project ?? '—' }}</td>
+            <td>:&nbsp;</td>
+            <td colspan="2">{{ $certificate->project }}</td>
+        </tr>
+        <tr>
+            <td><b>Sample</b></td>
+            <td>:&nbsp;</td>
+            <td style="width: 30%"><b>{{ $certificate->sample }}</b></td>
+            <td> {!! $certificate->sample_note !!}</td>
         </tr>
         <tr>
             <td><b>Location</b></td>
-            <td>: {{ $report->location ?? '—' }}</td>
+            <td>:&nbsp;</td>
+            <td colspan="2">{{ $certificate->location }}</td>
         </tr>
         <tr>
             <td><b>Test</b></td>
-            <td>: <b>{{ $report->test_name ?? '—' }}</b></td>
+            <td>:&nbsp;</td>
+            <td colspan="2"><b>{{ $certificate->test_name }}</b></td>
         </tr>
         <tr>
-            <td><b>Date of Test</b></td>
-            <td>: {{ $report->date_of_test ? \Carbon\Carbon::parse($report->date_of_test)->format('d/m/Y') : '—' }}</td>
+            <td class="nowrap"><b>Date of Test&nbsp; </b></td>
+            <td>:&nbsp;</td>
+            <td colspan="2">{{ $certificate->date_of_test ? \Carbon\Carbon::parse($certificate->date_of_test)->format('d/m/Y') : '—' }}</td>
         </tr>
     </table>
 
     <hr>
 
-    <!-- Report Title -->
+    <!-- Certificate Title -->
     <h6 class="text-center"><b>TEST REPORT</b></h6>
 
     <!-- Test Results Table -->
@@ -248,13 +283,13 @@
         <thead>
             <tr>
                 <th>Sl. No.</th>
-                <th>Date of Casting</th>
-                <th>Specimen Designation/Frog Mark</th>
-                <th>Specimen Area</th>
-                <th>Maximum Load</th>
-                <th>Crushing Strength</th>
-                <th>Average Strength</th>
-                <th>Mode of Failure</th>
+                <th>Date of <br>Casting as <br>per the letter</th>
+                <th>Specimen <br>Designation/<br>Forg Mark</th>
+                <th>Specimen <br>Area</th>
+                <th>Maximum <br>Load</th>
+                <th>Crushing <br>Strength</th>
+                <th>Average <br>Crushing<br> Strength</th>
+                <th>Mode of <br>Failure</th>
             </tr>
             <tr>
                 <th></th>
@@ -268,10 +303,12 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($report->testResults as $index => $result)
+
+            @forelse ($certificate->testResults as $index => $result)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $result->date_of_casting ? \Carbon\Carbon::parse($result->date_of_casting)->format('d/m/Y') : '—' }}</td>
+                    <td>{{ $result->date_of_casting ? \Carbon\Carbon::parse($result->date_of_casting)->format('d/m/Y') : '—' }} <br> <b>({{ $certificate->total_day_of_test }}
+                            days test)</b></td>
                     <td>{{ $result->specimen_designation ?? '—' }}</td>
                     <td>{{ number_format($result->specimen_area, 2) ?? '—' }}</td>
                     <td>{{ number_format($result->maximum_load, 0) ?? '—' }}</td>
@@ -289,7 +326,7 @@
 
     <!-- Table Note (outside table) -->
     <div class="table-note clearfix">
-        <span><b>Note:</b> {{ $report->notes }}</span>
+        <span><b>Note:</b> {{ $certificate->notes }}</span>
         <span class="right">*Combined = Mortar and Aggregate Failure</span>
     </div>
 
@@ -297,20 +334,24 @@
     <div class="row signature-block">
         <!-- Left Signatory -->
         <div class="col-4 text-start">
-            <p style="margin-bottom: 80px">{{ $report->leftSignatory->role }} by:</p>
-            <p><b>{{ $report->leftSignatory->name }}</b></p>
-            <p>{{ $report->leftSignatory->designation }}</p>
-            <p>{{ $report->leftSignatory->department }}</p>
-            <p><i>{{ $report->leftSignatory->institute }}</i></p>
+            <p style="margin-bottom: 80px">{{ $certificate->leftSignatory->role }} by:</p>
+            <p><b>{{ $certificate->leftSignatory->name }}</b></p>
+            <p>{{ $certificate->leftSignatory->designation }}</p>
+            <p>{{ $certificate->leftSignatory->department }}</p>
+            <p><i>{{ $certificate->leftSignatory->institute }}</i></p>
         </div>
 
         <!-- Middle QR Code -->
         <div class="col-4 text-center">
-            @if (!empty($report->qr_code_id))
+            @if (!empty($certificate->qr_code_id))
+                @php
+                    $baseUrl = preg_replace('#^https?://#', '', rtrim(config('app.url'), '/'));
+                    $QrCodeUrl = 'verify.ac.' . $baseUrl . '/' . $certificate->qr_code_id;
+                @endphp
                 <div class="qr-block">
-                    <p class="qr-top-id">{{ $report->id }}</p>
-                    {!! QrCode::size(120)->margin(0)->color(0, 0, 0)->backgroundColor(255, 255, 255)->generate($report->qr_code_id) !!}
-                    <p class="qr-bottom-code">{{ $report->qr_code_id }}</p>
+                    <p class="qr-top-id">{{ $certificate->qr_sl }}</p>
+                    {!! QrCode::size(120)->margin(0)->color(0, 0, 0)->backgroundColor(255, 255, 255)->generate($QrCodeUrl) !!}
+                    <p class="qr-bottom-code">{{ $certificate->qr_code_id }}</p>
                 </div>
             @else
                 <img src="https://placehold.co/100x100?text=No+QR" alt="QR Code" class="qr-placeholder">
@@ -318,12 +359,14 @@
         </div>
 
         <!-- Right Signatory -->
-        <div class="col-4 text-end">
-            <p style="margin-bottom: 80px">{{ $report->rightSignatory->role }} by:</p>
-            <p><b>{{ $report->rightSignatory->name }}</b></p>
-            <p>{{ $report->rightSignatory->designation }}</p>
-            <p>{{ $report->rightSignatory->department }}</p>
-            <p><i>{{ $report->rightSignatory->institute }}</i></p>
+        <div class="col-4 text-start">
+            <p style="margin-bottom: 80px">{{ $certificate->rightSignatory->role }} by:
+            <img src="{{ showDefaultImage('storage/' . $siteData['seal']) }}" alt="Left Logo" style="width: 80px; height: auto; padding-left:30px;"></p>
+            <p class="text-end">{{ \Carbon\Carbon::parse($certificate->signature_date)->format('d/m/Y') }}</p>
+            <p><b>{{ $certificate->rightSignatory->name }}</b></p>
+            <p>{{ $certificate->rightSignatory->designation }}</p>
+            <p>{{ $certificate->rightSignatory->department }}</p>
+            <p><i>{{ $certificate->rightSignatory->institute }}</i></p>
         </div>
     </div>
 
@@ -336,7 +379,7 @@
             BRTC does not have any responsibility as to the representative character of the samples
             required to be tested. It is recommended that samples are sent in a secure and sealed
             wrapper/container under signature of the competent authority, in order to avoid fraudulent
-            fabrication of test results. It is recommended that all test reports are collected by duly
+            fabrication of test results. It is recommended that all test certificates are collected by duly
             authorized person, and not by the Contractor/Supplier.
         </p>
         {{-- <p class="text-center">Page 1 of 2 | BRTC BUET | BUETCE 0562309</p> --}}

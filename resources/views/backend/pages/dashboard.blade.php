@@ -27,8 +27,8 @@
                             <!--begin::Small Box Widget 2-->
                             <div class="small-box text-bg-success">
                                 <div class="inner">
-                                    <h3>{{ $toralReports ?? 0 }}</h3>
-                                    <p>Total Reports</p>
+                                    <h3>{{ $toralCertificates ?? 0 }}</h3>
+                                    <p>Total Certificates</p>
                                 </div>
                                 <svg
                                     class="small-box-icon"
@@ -41,7 +41,7 @@
                                     </path>
                                 </svg>
                                 <a
-                                    href="{{ route('report.index') }}"
+                                    href="{{ route('certificate.index') }}"
                                     class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
                                     More info <i class="bi bi-link-45deg"></i>
                                 </a>

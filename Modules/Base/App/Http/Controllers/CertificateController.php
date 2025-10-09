@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\Base\App\Repository\Eloquents\ReportRepository;
+use Modules\Base\App\Repository\Eloquents\CertificateRepository;
 use Yajra\DataTables\Facades\DataTables;
 
 
-class ReportController extends Controller
+class CertificateController extends Controller
 {
-    public function __construct(private ReportRepository $repository) {}
+    public function __construct(private CertificateRepository $repository) {}
 
     /**
      * Display a listing of the resource.
@@ -31,18 +31,18 @@ class ReportController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     return view('backend.includes.action', [
-                        'routeEdit'   => route('report.edit', $row->id),
-                        'routeShow'   => route('report.show', $row->id),
-                        'routeDelete' => route('report.delete'),
+                        'routeEdit'   => route('certificate.edit', $row->id),
+                        'routeShow'   => route('certificate.show', $row->id),
+                        'routeDelete' => route('certificate.delete'),
                         'id'          => $row->id,
-                        'title'       => 'Report'
+                        'title'       => 'Certificate'
                     ]);
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        return view('base::report.index');
+        return view('base::certificate.index');
     }
 
     /**
@@ -50,17 +50,19 @@ class ReportController extends Controller
      */
     public function create()
     {
-        return view('base::report.create');
+        return view('base::certificate.create');
     }
 
     /**
-     * Store a newly created report with test results.
+     * Store a newly created certificate with test results.
      */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'left_signatory_id'  => 'nullable|integer',
             'right_signatory_id' => 'nullable|integer',
+            'signature_date'     => 'nullable|date',
+            'qr_sl'             => 'nullable|integer',
             'qr_code_id'      => 'nullable|string|max:20',
             'brtc_no'         => 'nullable|string|max:255',
             'brtc_date'       => 'nullable|date',
@@ -68,12 +70,13 @@ class ReportController extends Controller
             'ref_date'        => 'nullable|date',
             'sent_by'         => 'nullable|string|max:255',
             'sample'          => 'nullable|string',
+            'sample_note'     => 'nullable|string',
             'project'         => 'nullable|string|max:255',
             'location'        => 'nullable|string|max:255',
             'test_name'       => 'nullable|string|max:255',
             'date_of_test'    => 'nullable|date',
             'notes'           => 'nullable|string',
-            'page_ref'        => 'nullable|string|max:50',
+            'total_day_of_test' => 'nullable|integer',
             'test_results'    => 'nullable|array',
             'test_results.*.date_of_casting'      => 'nullable|date',
             'test_results.*.specimen_designation' => 'nullable|string|max:50',
@@ -86,16 +89,16 @@ class ReportController extends Controller
 
         DB::beginTransaction();
         try {
-            $report = $this->repository->create($validated);
+            $certificate = $this->repository->create($validated);
 
             if ($request->filled('test_results')) {
                 foreach ($request->test_results as $result) {
-                    $report->testResults()->create($result);
+                    $certificate->testResults()->create($result);
                 }
             }
 
             DB::commit();
-            return redirect()->route('report.index')->with('success', 'Report created successfully!');
+            return redirect()->route('certificate.index')->with('success', 'Certificate created successfully!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
@@ -103,31 +106,33 @@ class ReportController extends Controller
     }
 
     /**
-     * Display a specific report.
+     * Display a specific certificate.
      */
     public function show($id)
     {
-        $data['report'] = $this->repository->findById($id, ['*'], ['testResults', 'leftSignatory', 'rightSignatory']);
-        return view('base::report.show', $data);
+        $data['certificate'] = $this->repository->findById($id, ['*'], ['testResults', 'leftSignatory', 'rightSignatory']);
+        return view('base::certificate.show', $data);
     }
 
     /**
-     * Show the form for editing a report.
+     * Show the form for editing a certificate.
      */
     public function edit($id)
     {
-        $data['report'] = $this->repository->findById($id, ['*'], ['testResults']);
-        return view('base::report.edit', $data);
+        $data['certificate'] = $this->repository->findById($id, ['*'], ['testResults']);
+        return view('base::certificate.edit', $data);
     }
 
     /**
-     * Update the specified report and its test results.
+     * Update the specified certificate and its test results.
      */
     public function update(Request $request, $id): RedirectResponse
     {
         $validated = $request->validate([
             'left_signatory_id'  => 'nullable|integer',
             'right_signatory_id' => 'nullable|integer',
+            'signature_date'     => 'nullable|date',
+            'qr_sl'             => 'nullable|integer',
             'qr_code_id'      => 'nullable|string|max:20',
             'brtc_no'         => 'nullable|string|max:255',
             'brtc_date'       => 'nullable|date',
@@ -135,30 +140,31 @@ class ReportController extends Controller
             'ref_date'        => 'nullable|date',
             'sent_by'         => 'nullable|string|max:255',
             'sample'          => 'nullable|string',
+            'sample_note'     => 'nullable|string',
             'project'         => 'nullable|string|max:255',
             'location'        => 'nullable|string|max:255',
             'test_name'       => 'nullable|string|max:255',
             'date_of_test'    => 'nullable|date',
             'notes'           => 'nullable|string',
-            'page_ref'        => 'nullable|string|max:50',
+            'total_day_of_test' => 'nullable|integer',
             'test_results'    => 'nullable|array',
         ]);
 
         DB::beginTransaction();
         try {
-            $report = $this->repository->findById($id);
-            $report->update($validated);
+            $certificate = $this->repository->findById($id);
+            $certificate->update($validated);
 
             // Delete old results then reinsert new ones
-            $report->testResults()->delete();
+            $certificate->testResults()->delete();
             if ($request->filled('test_results')) {
                 foreach ($request->test_results as $result) {
-                    $report->testResults()->create($result);
+                    $certificate->testResults()->create($result);
                 }
             }
 
             DB::commit();
-            return redirect()->route('report.index')->with('success', 'Report updated successfully!');
+            return redirect()->route('certificate.index')->with('success', 'Certificate updated successfully!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
@@ -166,14 +172,14 @@ class ReportController extends Controller
     }
 
     /**
-     * Remove a report and its related test results.
+     * Remove a certificate and its related test results.
      */
     public function destroy(Request $request)
     {
         try {
-            $report = $this->repository->findById($request->id);
-            $report->testResults()->delete();
-            $report->delete();
+            $certificate = $this->repository->findById($request->id);
+            $certificate->testResults()->delete();
+            $certificate->delete();
 
             return response()->json(['success' => true]);
         } catch (\Throwable $e) {

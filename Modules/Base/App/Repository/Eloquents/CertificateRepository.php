@@ -2,12 +2,12 @@
 
 namespace Modules\Base\App\Repository\Eloquents;
 
-use Modules\Base\App\Models\Report;
+use Modules\Base\App\Models\Certificate;
 use App\Repository\Eloquents\BaseRepository;
 
-class ReportRepository extends BaseRepository
+class CertificateRepository extends BaseRepository
 {
-    public function __construct(Report $model)
+    public function __construct(Certificate $model)
     {
         parent::__construct($model);
     }

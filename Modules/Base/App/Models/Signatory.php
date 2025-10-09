@@ -9,10 +9,10 @@ class Signatory extends Model
     protected $guarded = ['id'];
 
     /**
-     * Each signatory belongs to one report
+     * Each signatory belongs to one certificate
      */
-    public function report()
+    public function certificate()
     {
-        return $this->belongsTo(Report::class);
+        return $this->belongsTo(Certificate::class);
     }
 }

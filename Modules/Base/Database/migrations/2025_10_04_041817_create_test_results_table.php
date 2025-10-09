@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('test_results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('report_id');  // FK to reports
+            $table->unsignedBigInteger('certificate_id');  // FK to certificates
             $table->date('date_of_casting')->nullable();
             $table->string('specimen_designation')->nullable(); // e.g. PA
             $table->decimal('specimen_area', 8, 2)->nullable(); // sq in

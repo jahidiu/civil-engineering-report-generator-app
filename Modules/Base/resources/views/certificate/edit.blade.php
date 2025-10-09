@@ -1,16 +1,16 @@
 @extends('layouts.admin_app')
 
-@section('title', 'Edit Report')
+@section('title', 'Edit Certificate')
 
 @section('breadcrumb')
     <div class="row">
         <div class="col-sm-6">
-            <h3 class="mb-0">Edit Report</h3>
+            <h3 class="mb-0">Edit Certificate</h3>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-end">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Report Edit</li>
+                <li class="breadcrumb-item active">Certificate Edit</li>
             </ol>
         </div>
     </div>
@@ -21,43 +21,51 @@
         <div class="col-12">
             <div class="card card-success card-outline">
                 <div class="card-body">
-                    <form action="{{ route('report.update', $report->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('certificate.update', $certificate->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="row">
                             <x-common.input :required="true" column=6 type="text" id="brtc_no" name="brtc_no" label="BRTC No" placeholder="1103-54536/CE/24-25"
-                                :value="$report->brtc_no" />
-                            <x-common.input :required="true" column=6 type="date" id="brtc_date" name="brtc_date" label="BRTC Date" :value="$report->brtc_date" />
+                                :value="$certificate->brtc_no" />
+                            <x-common.input :required="true" column=6 type="date" id="brtc_date" name="brtc_date" label="BRTC Date" :value="$certificate->brtc_date" />
 
-                            <x-common.input :required="true" column=6 type="text" id="ref_no" name="ref_no" label="Reference No" placeholder="Ref. No." :value="$report->ref_no" />
-                            <x-common.input :required="true" column=6 type="date" id="ref_date" name="ref_date" label="Reference Date" :value="$report->ref_date" />
+                            <x-common.input :required="true" column=6 type="text" id="ref_no" name="ref_no" label="Reference No" placeholder="Ref. No." :value="$certificate->ref_no" />
+                            <x-common.input :required="true" column=6 type="date" id="ref_date" name="ref_date" label="Reference Date" :value="$certificate->ref_date" />
 
                             <x-common.input :required="true" column=12 type="text" id="sent_by" name="sent_by" label="Sent By" placeholder="Name or Organization"
-                                :value="$report->sent_by" />
+                                :value="$certificate->sent_by" />
                             <x-common.input :required="true" column=12 type="text" id="sample" name="sample" label="Sample Description" placeholder="Concrete Cylinder"
-                                :value="$report->sample" />
+                                :value="$certificate->sample" />
+                            <x-common.input :required="true" column="12" type="text" id="sample_note" name="sample_note"
+                                label="Sample Note" placeholder="Enter Sample Note" :value="$certificate->sample_note" />
 
-                            <x-common.input :required="true" column=6 type="text" id="project" name="project" label="Project" placeholder="Project Name" :value="$report->project" />
-                            <x-common.input :required="true" column=6 type="text" id="location" name="location" label="Location" placeholder="Test Location" :value="$report->location" />
+                            <x-common.input :required="true" column=12 type="text" id="project" name="project" label="Project" placeholder="Project Name" :value="$certificate->project" />
+                            <x-common.input :required="true" column=12 type="text" id="test_name" name="test_name" label="Test Name" placeholder="Compressive Strength Test"
+                                :value="$certificate->test_name" />
 
-                            <x-common.input :required="true" column=6 type="text" id="test_name" name="test_name" label="Test Name" placeholder="Compressive Strength Test"
-                                :value="$report->test_name" />
+                            <x-common.input :required="true" column=6 type="text" id="location" name="location" label="Location" placeholder="Test Location" :value="$certificate->location" />
                             <x-common.input :required="true" column="6" type="text" id="qr_code_id" name="qr_code_id" label="QR Code ID"
-                                placeholder="Enter QR Code ID (e.g. 5Xg7htz7Z)" :value="$report->qr_code_id" />
-                            <x-common.input :required="true" column=6 type="date" id="date_of_test" name="date_of_test" label="Date of Test" :value="$report->date_of_test" />
+                                placeholder="Enter QR Code ID (e.g. 5Xg7htz7Z)" :value="$certificate->qr_code_id" />
 
-                            <x-common.text-area column=6 id="notes" name="notes" label="Notes" placeholder="Samples were received in sealed condition."
-                                row=1 :value="$report->notes" />
+                            <x-common.input :required="true" column="6" type="text" id="qr_sl" name="qr_sl" label="QR SL" placeholder="Enter QR SL"
+                                :value="$certificate->qr_sl" />
+                            <x-common.input :required="true" column=6 type="date" id="date_of_test" name="date_of_test" label="Date of Test" :value="$certificate->date_of_test" />
 
                             {{-- Left Signatory --}}
                             <x-common.server-side-select :required="false" column=6 name="left_signatory_id" id="left_signatory_id"
                                 class="left_signatory_id" disableOptionText="Select Left Signatory" label="Left Signatory"
-                                :value="$report->left_signatory_id" :options="[['id' => $report->left_signatory_id, 'name' => $report->leftSignatory->name]]"> </x-common.server-side-select>
+                                :value="$certificate->left_signatory_id" :options="[['id' => $certificate->left_signatory_id, 'name' => $certificate->leftSignatory->name]]"> </x-common.server-side-select>
                             {{-- Right Signatory --}}
                             <x-common.server-side-select :required="false" column=6 name="right_signatory_id" id="right_signatory_id"
                                 class="right_signatory_id" disableOptionText="Select Right Signatory" label="Right Signatory"
-                                :value="$report->right_signatory_id" :options="[['id' => $report->right_signatory_id, 'name' => $report->rightSignatory->name]]"> </x-common.server-side-select>
+                                :value="$certificate->right_signatory_id" :options="[['id' => $certificate->right_signatory_id, 'name' => $certificate->rightSignatory->name]]"> </x-common.server-side-select>
+                            {{-- signature_date --}}
+                            <x-common.input :required="true" column="6" type="date" id="signature_date" name="signature_date"
+                                label="Signature Date" placeholder="Select Signature Date" :value="$certificate->signature_date" />
+
+                            <x-common.text-area column=6 id="notes" name="notes" label="Note" placeholder="Samples were received in sealed condition."
+                                row=1 :value="$certificate->notes" />
                         </div>
 
                         <hr>
@@ -66,20 +74,21 @@
                         <table class="table table-bordered" id="testResultTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Date of Casting</th>
-                                    <th>Specimen Designation</th>
-                                    <th>Specimen Area (sq in)</th>
+                                    <th>Date of Casting <br> as per the letter</th>
+                                    <th>Specimen Designation/<br>Forg Mark</th>
+                                    <th>Specimen Area (sq.in)</th>
                                     <th>Maximum Load (lb)</th>
                                     <th>Crushing Strength (psi)</th>
-                                    <th>Average Strength</th>
+                                    <th>Average Crushing Strength</th>
                                     <th>Mode of Failure</th>
-                                    <th>Action</th>
+                                    <th><i class="bi bi-three-dots-vertical"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($report->testResults as $key => $result)
+                                @foreach ($certificate->testResults as $key => $result)
                                     <tr>
-                                        <td><input type="date" name="test_results[{{ $key }}][date_of_casting]" class="form-control" value="{{ $result->date_of_casting }}">
+                                        <td><input type="date" name="test_results[{{ $key }}][date_of_casting]" class="form-control"
+                                                value="{{ $result->date_of_casting }}">
                                         </td>
                                         <td><input type="text" name="test_results[{{ $key }}][specimen_designation]" class="form-control"
                                                 value="{{ $result->specimen_designation }}"></td>
@@ -106,7 +115,7 @@
                             </button>
                         </div>
                         <div class="text-start mt-2">
-                            <a href="{{ route('report.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('certificate.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Back
                             </a>
                             <button type="submit" class="btn btn-success">
@@ -122,7 +131,7 @@
 
 @push('js')
     <script>
-        let rowIndex = {{ count($report->testResults) }};
+        let rowIndex = {{ count($certificate->testResults) }};
         $('#addRow').click(function() {
             let row = `
         <tr>

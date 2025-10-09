@@ -99,6 +99,17 @@
                                         <input type="file" name="favicon" class="form-control" id="Favicon" />
                                     </div>
                                 </div>
+                                <div class="row mb-3">
+                                    <label for="Seal" class="col-sm-2 col-form-label">Seal</label>
+                                    <div class="col-sm-6">
+                                        @if (!empty($settings['seal']))
+                                            <div class="mb-2">
+                                                <img src="{{ showDefaultImage('storage/' . $settings['seal']) }}" alt="Seal" width="100">
+                                            </div>
+                                        @endif
+                                        <input type="file" name="seal" class="form-control" id="Seal" />
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="tab-pane fade" id="contact-info-tab-pane" role="tabpanel" aria-labelledby="contact-info-tab" tabindex="0">

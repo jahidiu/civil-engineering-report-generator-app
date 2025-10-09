@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class TestResult extends Model
 {
     protected $guarded = ['id'];
-    
-    public function report()
+
+    public function certificate()
     {
-        return $this->belongsTo(Report::class);
+        return $this->belongsTo(Certificate::class);
     }
 }

@@ -7,7 +7,7 @@ use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Modules\Base\App\Models\Report;
+use Modules\Base\App\Models\Certificate;
 
 class HomeController extends Controller
 {
@@ -20,7 +20,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $data['toralReports'] = Report::count();
+        $data['toralCertificates'] = Certificate::count();
         return view('backend.pages.dashboard', $data);
     }
 

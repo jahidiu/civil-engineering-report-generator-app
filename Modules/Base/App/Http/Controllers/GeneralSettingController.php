@@ -21,12 +21,6 @@ class GeneralSettingController extends Controller
         return view('base::settings.general_setting', $data);
     }
 
-    public function donationSetting()
-    {
-        $data['settings'] = GeneralSetting::pluck('value', 'type')->toArray();
-
-        return view('base::settings.donation_setting', $data);
-    }
     /**
      * Store a newly created resource in storage.
      */
@@ -52,6 +46,7 @@ class GeneralSettingController extends Controller
                 'primary_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
                 'secondary_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
                 'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+                'seal' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
                 'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
                 'cookies_allow' => 'nullable|string|max:3',
                 'privacy_policy' => 'nullable|string',
@@ -76,6 +71,9 @@ class GeneralSettingController extends Controller
             }
             if ($request->hasFile('favicon')) {
                 $data['favicon'] = $this->uploadFile($request->file('favicon'), 'images');
+            }
+            if ($request->hasFile('seal')) {
+                $data['seal'] = $this->uploadFile($request->file('seal'), 'images');
             }
             if ($request->hasFile('meta_image')) {
                 $data['meta_image'] = $this->uploadFile($request->file('meta_image'), 'images');
@@ -106,61 +104,6 @@ class GeneralSettingController extends Controller
         return view('base::settings.terms_and_condition', $data);
     }
 
-    public function qrCodeSetting()
-    {
-        $data['settings'] = GeneralSetting::pluck('value', 'type')->toArray();
-        return view('base::settings.qr_code_config', $data);
-    }
 
-    public function payPalSetup()
-    {
-        return view('base::mail.paypal_setup');
-    }
 
-    public function updatePayPalSettings(Request $request)
-    {
-        $request->validate([
-            'PAYPAL_MODE' => 'required|string',
-            'PAYPAL_CLIENT_ID' => 'required|string',
-            'PAYPAL_CLIENT_SECRET' => 'required|string',
-            'PAYPAL_WEBHOOK_ID' => 'required|string',
-        ]);
-
-        $envPath = base_path('.env');
-        $envBackupPath = base_path('.env.backup');
-
-        // Create a backup of the current .env file
-        if (File::exists($envPath) && !File::exists($envBackupPath)) {
-            File::copy($envPath, $envBackupPath);
-        }
-
-        $envContent = File::get($envPath);
-
-        $settings = [
-            'PAYPAL_MODE' => $request->PAYPAL_MODE,
-            'PAYPAL_CLIENT_ID' => $request->PAYPAL_CLIENT_ID,
-            'PAYPAL_CLIENT_SECRET' => $request->PAYPAL_CLIENT_SECRET,
-            'PAYPAL_WEBHOOK_ID' => $request->PAYPAL_WEBHOOK_ID,
-        ];
-
-        foreach ($settings as $key => $value) {
-            // wrap values containing spaces or special chars in double quotes
-            if (preg_match('/\s/', $value) || preg_match('/[()]/', $value)) {
-                $value = '"' . addslashes($value) . '"';
-            }
-
-            $pattern = "/^" . preg_quote($key, '/') . "=(.*)$/m";
-            $replacement = $key . '=' . $value;
-
-            if (preg_match($pattern, $envContent)) {
-                $envContent = preg_replace($pattern, $replacement, $envContent);
-            } else {
-                $envContent .= "\n" . $replacement;
-            }
-        }
-
-        File::put($envPath, $envContent);
-
-        return redirect()->back()->with('success', 'Mail setting updated successfully.');
-    }
 }

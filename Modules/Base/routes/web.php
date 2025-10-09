@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Base\App\Http\Controllers\SignatoryController;
 use Modules\Base\App\Http\Controllers\GeneralSettingController;
 use Modules\Base\App\Http\Controllers\MailConfigController;
-use Modules\Base\App\Http\Controllers\ReportController;
+use Modules\Base\App\Http\Controllers\CertificateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +21,14 @@ use Modules\Base\App\Http\Controllers\ReportController;
 Route::group(['middleware' => 'auth', 'prefix' => 'base'], function () {
 
     Route::controller(GeneralSettingController::class)->group(function () {
-        Route::get('/setting', 'index')->name('setting.index')->middleware('permission:general.setting');
-        Route::get('/donation-setting', 'donationSetting')->name('setting.donation')->middleware('permission:general.setting');
+        Route::get('/setting', 'index')->name('setting.index');
         Route::post('/setting', 'store')->name('setting.store');
-        Route::get('/setting/Qr-code', 'qrCodeSetting')->name('setting.qr_code')->middleware('permission:setting.qr_code');
+        // Route::get('/setting/Qr-code', 'qrCodeSetting')->name('setting.qr_code');
     });
 
     Route::controller(MailConfigController::class)->group(function () {
-        Route::get('/mail-setup', 'mailSetup')->name('mail.setup')->middleware('permission:mail.setup');
-        Route::post('/test-mail', 'testMail')->name('mail.test')->middleware('permission:mail.test');
+        Route::get('/mail-setup', 'mailSetup')->name('mail.setup');
+        Route::post('/test-mail', 'testMail')->name('mail.test');
         Route::post('/update-mail-settings', 'updateMailSettings')->name('mail.update_settings');
     });
 
@@ -42,13 +41,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'base'], function () {
         Route::post('/signatory/delete', 'destroy')->name('signatory.delete');
         Route::get('/signatory/get-list', 'get_for_select')->name('signatory.list');
     });
-    Route::controller(ReportController::class)->middleware('auth')->group(function () {
-        Route::get('/report', 'index')->name('report.index');
-        Route::get('/report/create', 'create')->name('report.create');
-        Route::post('/report', 'store')->name('report.store');
-        Route::get('/report/{id}', 'show')->name('report.show');
-        Route::get('/report/{id}/edit', 'edit')->name('report.edit');
-        Route::put('/report/{id}', 'update')->name('report.update');
-        Route::post('/report/delete', 'destroy')->name('report.delete');
+    Route::controller(CertificateController::class)->middleware('auth')->group(function () {
+        Route::get('/certificate', 'index')->name('certificate.index');
+        Route::get('/certificate/create', 'create')->name('certificate.create');
+        Route::post('/certificate', 'store')->name('certificate.store');
+        Route::get('/certificate/{id}', 'show')->name('certificate.show');
+        Route::get('/certificate/{id}/edit', 'edit')->name('certificate.edit');
+        Route::put('/certificate/{id}', 'update')->name('certificate.update');
+        Route::post('/certificate/delete', 'destroy')->name('certificate.delete');
     });
 });

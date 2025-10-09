@@ -1,16 +1,16 @@
 @extends('layouts.admin_app')
 
-@section('title', 'Report Create')
+@section('title', 'Certificate Create')
 
 @section('breadcrumb')
     <div class="row">
         <div class="col-sm-6">
-            <h3 class="mb-0">Report Create</h3>
+            <h3 class="mb-0">Certificate Create</h3>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-end">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Report</li>
+                <li class="breadcrumb-item active">Certificate</li>
             </ol>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="card card-success card-outline">
                 <div class="card-body">
-                    <form action="{{ route('report.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('certificate.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
 
@@ -46,32 +46,39 @@
                                 label="Sent By" placeholder="Enter Sender Name / Organization" :value="old('sent_by')" />
 
                             {{-- Sample Description --}}
-                            <x-common.input :required="true" column="12" type="textarea" id="sample" name="sample"
+                            <x-common.input :required="true" column="12" type="text" id="sample" name="sample"
                                 label="Sample Description" placeholder="Enter Sample Description" :value="old('sample')" />
 
-                            {{-- Project Name --}}
-                            <x-common.input :required="true" column="6" type="text" id="project" name="project"
-                                label="Project Name" placeholder="Enter Project Name" :value="old('project')" />
+                            {{-- Sample Note --}}
+                            <x-common.input :required="true" column="12" type="text" id="sample_note" name="sample_note"
+                                label="Sample Note" placeholder="Enter Sample Note" :value="old('sample_note')" />
 
-                            {{-- Location --}}
-                            <x-common.input :required="true" column="6" type="text" id="location" name="location"
-                                label="Location" placeholder="Enter Location (e.g. Floor Casting)" :value="old('location')" />
+                            {{-- Project Name --}}
+                            <x-common.input :required="true" column="12" type="text" id="project" name="project"
+                                label="Project Name" placeholder="Enter Project Name" :value="old('project')" />
 
                             {{-- Test Name --}}
                             <x-common.input :required="true" column="6" type="text" id="test_name" name="test_name"
                                 label="Test Name" placeholder="Enter Test Name (e.g. Compressive Strength Test)" :value="old('test_name')" />
 
+                            {{-- Location --}}
+                            <x-common.input :required="true" column="6" type="text" id="location" name="location"
+                                label="Location" placeholder="Enter Location (e.g. Floor Casting)" :value="old('location')" />
+
+                            <x-common.input :required="true" column="6" type="number" min="1" id="total_day_of_test" name="total_day_of_test"
+                                label="Total day of Test" placeholder="Enter Total day of Test" :value="old('total_day_of_test')" />
+
                             {{-- QR Code ID --}}
                             <x-common.input :required="true" column="6" type="text" id="qr_code_id" name="qr_code_id"
                                 label="QR Code ID" placeholder="Enter QR Code ID (e.g. 5Xg7htz7Z)" :value="old('qr_code_id')" />
 
+                            {{-- qr_sl --}}
+                            <x-common.input :required="true" column="6" type="text" id="qr_sl" name="qr_sl"
+                                label="QR SL" placeholder="Enter QR SL" :value="old('qr_sl')" />
+
                             {{-- Date of Test --}}
                             <x-common.input :required="true" column="6" type="date" id="date_of_test" name="date_of_test"
                                 label="Date of Test" placeholder="Select Date of Test" :value="old('date_of_test')" />
-
-                            {{-- Notes --}}
-                            <x-common.text-area :required="false" column="6" id="notes" name="notes" row=1
-                                label="Notes" placeholder="Enter Notes (e.g. Samples received sealed)" :value="old('notes')" />
 
                             {{-- Left Signatory --}}
                             <x-common.server-side-select :required="false" column=6 name="left_signatory_id" id="left_signatory_id"
@@ -81,6 +88,13 @@
                             <x-common.server-side-select :required="false" column=6 name="right_signatory_id" id="right_signatory_id"
                                 class="right_signatory_id" disableOptionText="Select Right Signatory" label="Right Signatory"> </x-common.server-side-select>
 
+                            {{-- signature_date --}}
+                            <x-common.input :required="true" column="6" type="date" id="signature_date" name="signature_date"
+                                label="Signature Date" placeholder="Select Signature Date" :value="old('signature_date')" />
+
+                            {{-- Notes --}}
+                            <x-common.text-area :required="false" column="6" id="notes" name="notes" row=1
+                                label="Note" placeholder="Enter Note (e.g. Samples received sealed)" :value="old('notes')" />
                             {{-- Test Results Table --}}
                             <div class="col-12 mt-4">
                                 <h5 class="mb-3">Test Results</h5>
@@ -89,14 +103,14 @@
                                     <table class="table table-bordered" id="testResultsTable">
                                         <thead class="table-light">
                                             <tr class="text-center align-middle">
-                                                <th style="width: 15%;">Date of Casting</th>
-                                                <th style="width: 10%;">Specimen</th>
-                                                <th style="width: 10%;">Area (sq.in)</th>
-                                                <th style="width: 15%;">Max Load (lb)</th>
-                                                <th style="width: 15%;">Crushing Strength (psi)</th>
-                                                <th style="width: 15%;">Average Strength</th>
-                                                <th style="width: 15%;">Mode of Failure</th>
-                                                <th style="width: 5%;">Action</th>
+                                                <th>Date of Casting <br>as per the letter</th>
+                                                <th>Specimen Designation/<br>Forg Mark</th>
+                                                <th>Specimen Area (sq.in)</th>
+                                                <th>Maximum Load (lb)</th>
+                                                <th>Crushing Strength (psi)</th>
+                                                <th>Average Crushing Strength</th>
+                                                <th>Mode of Failure</th>
+                                                <th><i class="bi bi-three-dots-vertical"></i></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,7 +121,7 @@
                                                 <td><input type="number" step="0.01" name="test_results[0][maximum_load]" class="form-control" placeholder="0.00"></td>
                                                 <td><input type="number" step="0.01" name="test_results[0][crushing_strength]" class="form-control" placeholder="0.00"></td>
                                                 <td><input type="number" step="0.01" name="test_results[0][average_strength]" class="form-control" placeholder="0.00"></td>
-                                                <td><input type="text" name="test_results[0][mode_of_failure]" class="form-control" placeholder="Combined"></td>
+                                                <td><input type="text" name="test_results[0][mode_of_failure]" class="form-control" placeholder="Combined*"></td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-danger btn-sm removeRow">×</button>
                                                 </td>
@@ -125,7 +139,7 @@
 
                             {{-- Submit Button --}}
                             <div class="text-start mt-2">
-                                <a href="{{ route('report.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('certificate.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-arrow-left"></i> Back
                                 </a>
                                 <button type="submit" class="btn btn-success">
@@ -156,7 +170,7 @@
             <td><input type="number" step="0.01" name="test_results[${rowIndex}][maximum_load]" class="form-control" placeholder="0.00"></td>
             <td><input type="number" step="0.01" name="test_results[${rowIndex}][crushing_strength]" class="form-control" placeholder="0.00"></td>
             <td><input type="number" step="0.01" name="test_results[${rowIndex}][average_strength]" class="form-control" placeholder="0.00"></td>
-            <td><input type="text" name="test_results[${rowIndex}][mode_of_failure]" class="form-control" placeholder="Combined"></td>
+            <td><input type="text" name="test_results[${rowIndex}][mode_of_failure]" class="form-control" placeholder="Combined*"></td>
             <td class="text-center">
                 <button type="button" class="btn btn-danger btn-sm removeRow">×</button>
             </td>

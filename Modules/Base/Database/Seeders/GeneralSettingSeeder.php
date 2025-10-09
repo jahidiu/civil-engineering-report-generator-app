@@ -13,7 +13,7 @@ class GeneralSettingSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['type' => 'site_name', 'value' => 'Civil Engineering Report Generator'],
+            ['type' => 'site_name', 'value' => 'Civil Engineering Certificate Generator'],
             ['type' => 'site_short_name', 'value' => 'CERG'],
             ['type' => 'address', 'value' => '123 Main St, City, Country'],
             ['type' => 'phone', 'value' => '+1234567890'],
@@ -24,9 +24,9 @@ class GeneralSettingSeeder extends Seeder
             ['type' => 'instagram', 'value' => 'https://instagram.com/yourprofile'],
             ['type' => 'pinterest', 'value' => 'https://pinterest.com/yourprofile'],
             ['type' => 'youtube', 'value' => 'https://youtube.com/yourchannel'],
-            ['type' => 'meta_title', 'value' => 'Civil Engineering Report Generator'],
-            ['type' => 'meta_tag', 'value' => json_encode([['value' => 'Civil'], ['value' => 'Engineering'], ['value' => 'Report'], ['value' => 'Generator']])],
-            ['type' => 'meta_description', 'value' => 'A comprehensive tool for generating civil engineering reports.'],
+            ['type' => 'meta_title', 'value' => 'Civil Engineering Certificate Generator'],
+            ['type' => 'meta_tag', 'value' => json_encode([['value' => 'Civil'], ['value' => 'Engineering'], ['value' => 'Certificate'], ['value' => 'Generator']])],
+            ['type' => 'meta_description', 'value' => 'A comprehensive tool for generating civil engineering certificates.'],
             ['type' => 'cookies_allow', 'value' => 'Yes'],
         ];
         DB::table('general_settings')->insert($settings);

@@ -4,16 +4,18 @@ namespace Modules\Base\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Report extends Model
+class Certificate extends Model
 {
     protected $guarded = ['id'];
 
+    protected $table = 'certificates';
+
     /**
-     * A report can have many test results
+     * A certificate can have many test results
      */
     public function testResults()
     {
-        return $this->hasMany(TestResult::class, 'report_id');
+        return $this->hasMany(TestResult::class, 'certificate_id');
     }
 
     public function leftSignatory()

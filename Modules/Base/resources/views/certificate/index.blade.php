@@ -1,16 +1,16 @@
 @extends('layouts.admin_app')
 
-@section('title', 'Report List')
+@section('title', 'Certificate List')
 
 @section('breadcrumb')
     <div class="row">
         <div class="col-sm-6">
-            <h3 class="mb-0">Report List</h3>
+            <h3 class="mb-0">Certificate List</h3>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-end">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Report</li>
+                <li class="breadcrumb-item active">Certificate</li>
             </ol>
         </div>
     </div>
@@ -21,12 +21,12 @@
         <div class="col-12">
             <div class="card card-success card-outline">
                 <div class="card-header">
-                    <a href="{{ route('report.create') }}" class="btn btn-success btn-sm">
-                        <i class="fas fa-plus-circle"></i> Add New Report
+                    <a href="{{ route('certificate.create') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus-circle"></i> Add New Certificate
                     </a>
                 </div>
                 <div class="card-body">
-                    <table id="reportTable" class="table table-bordered table-striped table-hover">
+                    <table id="certificateTable" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -48,10 +48,10 @@
 @push('js')
     <script>
         $(function() {
-            let table = $('#reportTable').DataTable({
+            let table = $('#certificateTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('report.index') }}",
+                ajax: "{{ route('certificate.index') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                     { data: 'brtc_no', name: 'brtc_no' },
@@ -66,23 +66,23 @@
             $(document).on('click', '.delete-btn', function(e) {
                 e.preventDefault();
                 let id = $(this).data('id');
-                let url = "{{ route('report.delete') }}";
+                let url = "{{ route('certificate.delete') }}";
 
-                if (confirm('Are you sure you want to delete this report?')) {
+                if (confirm('Are you sure you want to delete this certificate?')) {
                     $.ajax({
                         url: url,
                         type: 'POST',
                         data: { id: id, _token: '{{ csrf_token() }}' },
                         success: function(response) {
                             if (response.success) {
-                                toastr.success('Report deleted successfully!');
+                                toastr.success('Certificate deleted successfully!');
                                 table.ajax.reload();
                             } else {
                                 toastr.error('Something went wrong!');
                             }
                         },
                         error: function() {
-                            toastr.error('Unable to delete report.');
+                            toastr.error('Unable to delete certificate.');
                         }
                     });
                 }

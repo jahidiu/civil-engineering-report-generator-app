@@ -18,11 +18,12 @@ class HeaderFooterService
     {
         $settings = GeneralSetting::pluck('value', 'type')->toArray();
         return [
-            'site_name' => $settings['site_name'] ?? 'BLIC',
-            'site_short_name' => $settings['site_short_name'] ?? 'BLIC',
+            'site_name' => $settings['site_name'] ?? 'BUET',
+            'site_short_name' => $settings['site_short_name'] ?? 'BUET',
             'primary_logo' => $settings['primary_logo'] ?? null,
             'secondary_logo' => $settings['secondary_logo'] ?? null,
             'favicon' => $settings['favicon'] ?? null,
+            'seal' => $settings['seal'] ?? null,
             'phone' => $settings['phone'] ?? '',
             'email' => $settings['email'] ?? '',
             'address' => $settings['address'] ?? '',
